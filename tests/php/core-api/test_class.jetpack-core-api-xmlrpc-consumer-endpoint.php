@@ -1,0 +1,83 @@
+<?php
+require_once dirname( __FILE__ ) . '/../../../_inc/lib/core-api/class.jetpack-core-api-endpoint.php';
+require_once dirname( __FILE__ ) . '/../../../_inc/lib/core-api/class.jetpack-core-api-xmlrpc-consumer-endpoint.php';
+
+class WP_Test_Jetpack_Core_Api_Xmlrpc_Consumer_Endpoint extends WP_UnitTestCase {
+
+	public function setUp() {
+		parent::setUp();
+	}
+
+	/**
+	 * @author zinigor
+	 * @covers Jetpack_Core_XMLRPC_Consumer_Endpoint
+	 * @requires PHP 5.2
+	 */
+	public function test_Jetpack_Core_API_XMLRPC_Consumer_Endpoint_class_structure() {
+
+		$reflection = new ReflectionClass( 'Jetpack_Core_API_XMLRPC_Consumer_Endpoint' );
+
+		$this->assertTrue( $reflection->isAbstract() );
+		$this->assertTrue( $reflection->isSubclassOf( 'Jetpack_Core_API_Endpoint' ) );
+
+		$privacy_check = $reflection->getMethod( 'is_site_private' );
+		$this->assertTrue( $privacy_check->isProtected() );
+	}
+
+	/**
+	 * @author zinigor
+	 * @covers Jetpack_Core_XMLRPC_Consumer_Endpoint
+	 * @requires PHP 5.2
+	 * @dataProvider _true_false_provider
+	 */
+	public function test_Jetpack_Core_API_XMLRPC_Consumer_Endpoint_privacy_check( $query_success, $result ) {
+		Jetpack::load_xml_rpc_client();
+
+		$xmlrpc_mock = $this->getMockBuilder( 'Jetpack_IXR_Client' )
+					 ->setMethods( array( 'query', 'getResponse' ) )
+					 ->getMock();
+
+		$endpoint = new WP_Test_Dummy_Xmlrpc_Consumer_Endpoint( $xmlrpc_mock );
+
+		$xmlrpc_mock->expects( $this->once() )
+			->method( 'query' )
+			->with( 'jetpack.isSitePubliclyAccessible' )
+			->willReturn( $query_success );
+
+		if ( $query_success ) {
+			$xmlrpc_mock->expects( $this->once() )
+				->method( 'getResponse' )
+				->willReturn( $result );
+		} else {
+			$xmlrpc_mock->expects( $this->never() )
+				->method( 'getResponse' );
+		}
+
+		$this->assertEquals( $result, $endpoint->process() );
+	}
+
+	public function _true_false_provider() {
+		return array(
+			array( true, true ),
+			array( true, false ),
+			array( false, false ),
+		);
+	}
+
+}
+
+/**
+ * Dummy testing class that will extend the testable endpoint and try to execute a privacy check
+ */
+class WP_Test_Dummy_Xmlrpc_Consumer_Endpoint extends Jetpack_Core_API_XMLRPC_Consumer_Endpoint {
+
+	public function __construct( $xmlrpc ) {
+		parent::__construct( $xmlrpc );
+	}
+
+	public function process() {
+
+		// Running a protected method in order to test that it's doing what it needs to do
+		return $this->is_site_private();
+	}
+}
