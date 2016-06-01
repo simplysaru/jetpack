@@ -4,6 +4,8 @@ require_once dirname( __FILE__ ) . '/../../../_inc/lib/core-api/class.jetpack-co
 
 class WP_Test_Jetpack_Core_Api_Xmlrpc_Consumer_Endpoint extends WP_UnitTestCase {
 
+	private $home_url = 'http://example.com';
+
 	public function setUp() {
 		parent::setUp();
 	}
@@ -41,7 +43,7 @@ class WP_Test_Jetpack_Core_Api_Xmlrpc_Consumer_Endpoint extends WP_UnitTestCase 
 
 		$xmlrpc_mock->expects( $this->once() )
 			->method( 'query' )
-			->with( 'jetpack.isSitePubliclyAccessible' )
+			->with( 'jetpack.isSitePubliclyAccessible', home_url() )
 			->willReturn( $query_success );
 
 		if ( $query_success ) {
