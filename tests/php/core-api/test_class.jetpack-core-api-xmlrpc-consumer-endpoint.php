@@ -55,7 +55,7 @@ class WP_Test_Jetpack_Core_Api_Xmlrpc_Consumer_Endpoint extends WP_UnitTestCase 
 				->method( 'getResponse' );
 		}
 
-		$this->assertEquals( $result, $endpoint->process() );
+		$this->assertEquals( $result, $endpoint->process( null ) );
 	}
 
 	public function _true_false_provider() {
@@ -77,7 +77,7 @@ class WP_Test_Dummy_Xmlrpc_Consumer_Endpoint extends Jetpack_Core_API_XMLRPC_Con
 		parent::__construct( $xmlrpc );
 	}
 
-	public function process() {
+	public function process( $data ) {
 
 		// Running a protected method in order to test that it's doing what it needs to do
 		return $this->is_site_public();

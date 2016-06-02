@@ -5,5 +5,5 @@
  */
 abstract class Jetpack_Core_API_Endpoint {
 
-	abstract public function process();
+	abstract public function process( $data );
 }
