@@ -21,10 +21,10 @@ abstract class Jetpack_Core_API_XMLRPC_Consumer_Endpoint extends Jetpack_Core_AP
 	}
 
 	/**
-	 * Checks if the site is private and returns the result.
-	 * @return Boolean $is_private
+	 * Checks if the site is public and returns the result.
+	 * @return Boolean $is_public
 	 */
-	protected function is_site_private() {
+	protected function is_site_public() {
 		if ( $this->xmlrpc->query( 'jetpack.isSitePubliclyAccessible', home_url() ) ) {
 			return $this->xmlrpc->getResponse();
 		}

@@ -22,7 +22,7 @@ class WP_Test_Jetpack_Core_Api_Xmlrpc_Consumer_Endpoint extends WP_UnitTestCase 
 		$this->assertTrue( $reflection->isAbstract() );
 		$this->assertTrue( $reflection->isSubclassOf( 'Jetpack_Core_API_Endpoint' ) );
 
-		$privacy_check = $reflection->getMethod( 'is_site_private' );
+		$privacy_check = $reflection->getMethod( 'is_site_public' );
 		$this->assertTrue( $privacy_check->isProtected() );
 	}
 
@@ -80,6 +80,6 @@ class WP_Test_Dummy_Xmlrpc_Consumer_Endpoint extends Jetpack_Core_API_XMLRPC_Con
 	public function process() {
 
 		// Running a protected method in order to test that it's doing what it needs to do
-		return $this->is_site_private();
+		return $this->is_site_public();
 	}
 }
