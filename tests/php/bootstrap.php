@@ -7,7 +7,9 @@
  * @package wordpress-plugin-tests
  */
 
-require_once dirname( __FILE__ ) . '/vendor/patchwork/Patchwork.php';
+if ( version_compare( PHP_VERSION, '5.6.0' ) >= 0 ) {
+	require_once dirname( __FILE__ ) . '/vendor/patchwork/Patchwork.php';
+}
 
 // Support for:
 // 1. `WP_DEVELOP_DIR` environment variable
