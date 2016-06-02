@@ -21,6 +21,7 @@
         "_Couchbase*",
         "Extract_Phar::*",
         "composer*",
-        "_manually*"
+        "_manually*",
+        "ConfigurationGenerator*"
     ]
 }
