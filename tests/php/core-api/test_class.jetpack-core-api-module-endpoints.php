@@ -3,15 +3,15 @@ require_once dirname( __FILE__ ) . '/../lib/class-wp-test-rest-controller-testca
 require_once dirname( __FILE__ ) . '/../lib/class-wp-test-spy-rest-server.php';
 
 use function Patchwork\redefine;
-use function Patchwork\restoreAll;
-
-define( 'JETPACK_DEV_DEBUG', true );
+use function Patchwork\restore;
 
 class WP_Test_Jetpack_Core_Api_Module_Activate_Endpoint extends WP_Test_REST_Controller_Testcase {
 
 	public static $xmlrpc_response = true;
 
 	public static $current_user_can = true;
+
+	public $redefines = array();
 
 	public function setUp() {
 		require_once dirname( __FILE__ ) . '/../../../_inc/lib/class.core-rest-api-endpoints.php';
@@ -20,26 +20,32 @@ class WP_Test_Jetpack_Core_Api_Module_Activate_Endpoint extends WP_Test_REST_Con
 
 		Jetpack::load_xml_rpc_client();
 
-		redefine( 'Jetpack_IXR_Client::query', function() {
+		$this->redefines[] = redefine( 'Jetpack_IXR_Client::query', function() {
 			return true; // noop
 		} );
 
-		redefine( 'Jetpack_IXR_Client::getResponse', function() {
+		$this->redefines[] = redefine( 'Jetpack_IXR_Client::getResponse', function() {
 			return WP_Test_Jetpack_Core_Api_Module_Activate_Endpoint::$xmlrpc_response;
 		} );
 
-		redefine( 'current_user_can', function( $permission ) {
+		$this->redefines[] = redefine( 'current_user_can', function( $permission ) {
 			if ( 'jetpack_manage_modules' === $permission ) {
 				return WP_Test_Jetpack_Core_Api_Module_Activate_Endpoint::$current_user_can;
 			}
 			return false;
 		} );
 
-		redefine( 'Jetpack::state', function( $slug ) { } );
+		$this->redefines[] = redefine( 'Jetpack::state', function( $slug ) { } );
+
+		$this->redefines[] = redefine( 'Jetpack::is_development_mode', function() {
+			return true;
+		} );
 	}
 
 	public function tearDown() {
-		restoreAll();
+		foreach ( $this->redefines as $redefine ) {
+			restore( $redefine );
+		}
 		parent::tearDown();
 	}
 
