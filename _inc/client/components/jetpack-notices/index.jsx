@@ -5,6 +5,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import SimpleNotice from 'components/notice';
 import { translate as __ } from 'i18n-calypso';
+import NoticesList from 'components/global-notices';
 
 /**
  * Internal dependencies
@@ -191,6 +192,7 @@ const JetpackNotices = React.createClass( {
 	render() {
 		return (
 			<div>
+				<NoticesList { ...this.props } />
 				<JetpackStateNotices />
 				<WelcomeNotice { ...this.props } />
 				<DevVersionNotice { ...this.props } />
