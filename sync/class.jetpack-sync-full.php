@@ -66,7 +66,7 @@ class Jetpack_Sync_Full {
 		 * and sent to the server so that it can clear the replica storage,
 		 * and/or reset other data.
 		 *
-		 * @since 4.1
+		 * @since 4.1.0
 		 */
 		do_action( 'jetpack_full_sync_start' );
 
@@ -195,7 +195,7 @@ class Jetpack_Sync_Full {
 			 	 * Fires with a chunk of object IDs during full sync.
 			 	 * These are expanded to full objects before upload
 			 	 *
-			 	 * @since 4.1
+			 	 * @since 4.1.0
 			 	 */
 				do_action( $action_name, $chunk );
 				$counter += count( $chunked_ids );
@@ -327,8 +327,8 @@ class Jetpack_Sync_Full {
 		set_transient( self::$status_transient_name . '_' . $name,
 			array(
 				'progress' => $percent,
-				// 'count' => $count, 
-				// 'total' => $total 
+				// 'count' => $count,
+				// 'total' => $total
 			),
 			self::$transient_timeout
 		);
@@ -348,7 +348,7 @@ class Jetpack_Sync_Full {
 		 * Fires when the full_sync_start action is actually transmitted.
 		 * This is useful for telling the user the status of full synchronization.
 		 *
-		 * @since 4.1
+		 * @since 4.1.0
 		 */
 		do_action( 'jetpack_full_sync_start_sent' );
 		set_transient( self::$status_transient_name, array( 'phase' => 'sending started' ), self::$transient_timeout );
@@ -359,7 +359,7 @@ class Jetpack_Sync_Full {
 		 * Fires when the full_sync_end action is actually transmitted.
 		 * This is useful for telling the user the status of full synchronization.
 		 *
-		 * @since 4.1
+		 * @since 4.1.0
 		 */
 		do_action( 'jetpack_full_sync_end_sent' );
 		set_transient( self::$status_transient_name, array( 'phase' => 'sending finished' ), self::$transient_timeout );

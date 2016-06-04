@@ -14,7 +14,7 @@ class Jetpack_Sync_Client {
 	const CALLABLES_AWAIT_TRANSIENT_NAME = 'jetpack_sync_callables_await';
 	const CONSTANTS_AWAIT_TRANSIENT_NAME = 'jetpack_sync_constants_await';
 	const SETTINGS_OPTION_PREFIX = 'jetpack_sync_settings_';
-	
+
 	private static $valid_settings = array( 'dequeue_max_bytes' => true, 'upload_max_bytes' => true, 'upload_max_rows' => true, 'sync_wait_time' => true );
 
 	private $dequeue_max_bytes;
@@ -304,7 +304,7 @@ class Jetpack_Sync_Client {
 			return;
 		}
 
-		// if we add any items to the queue, we should 
+		// if we add any items to the queue, we should
 		// try to ensure that our script can't be killed before
 		// they are sent
 		if ( function_exists( 'ignore_user_abort' ) ) {
@@ -526,7 +526,7 @@ class Jetpack_Sync_Client {
 		 * Return false or WP_Error to abort the sync (e.g. if there's an error)
 		 * The items will be automatically re-sent later
 		 *
-		 * @since 4.1
+		 * @since 4.1.0
 		 *
 		 * @param array $data The action buffer
 		 */
@@ -586,7 +586,7 @@ class Jetpack_Sync_Client {
 		$post->post_content_filtered   = apply_filters( 'the_content', $post->post_content );
 		$post->permalink               = get_permalink( $post->ID );
 		$post->shortlink               = wp_get_shortlink( $post->ID );
-		
+
 		// legacy fields until we fully sync users
 		$extra = array();
 		$extra['author_email']            = get_the_author_meta( 'email', $post->post_author );
@@ -606,7 +606,7 @@ class Jetpack_Sync_Client {
 	}
 
 	function filter_comment_and_add_hc_meta( $comment ) {
-		// add meta-property with Highlander Comment meta, which we 
+		// add meta-property with Highlander Comment meta, which we
 		// we need to process synchronously on .com
 		$hc_post_as = get_comment_meta( $comment->comment_ID, 'hc_post_as', true );
 		if ( 'wordpress' === $hc_post_as ) {
@@ -614,7 +614,7 @@ class Jetpack_Sync_Client {
 			$meta['hc_post_as']         = $hc_post_as;
 			$meta['hc_wpcom_id_sig']    = get_comment_meta( $comment->comment_ID, 'hc_wpcom_id_sig', true );
 			$meta['hc_foreign_user_id'] = get_comment_meta( $comment->comment_ID, 'hc_foreign_user_id', true );
-			$comment->meta = $meta;	
+			$comment->meta = $meta;
 		}
 
 		return $comment;
@@ -637,7 +637,7 @@ class Jetpack_Sync_Client {
 		/**
 		 * Tells the client to sync all options to the server
 		 *
-		 * @since 4.1
+		 * @since 4.1.0
 		 *
 		 * @param boolean Whether to expand options (should always be true)
 		 */
@@ -648,7 +648,7 @@ class Jetpack_Sync_Client {
 		/**
 		 * Tells the client to sync all network options to the server
 		 *
-		 * @since 4.1
+		 * @since 4.1.0
 		 *
 		 * @param boolean Whether to expand options (should always be true)
 		 */
@@ -676,7 +676,7 @@ class Jetpack_Sync_Client {
 				/**
 				 * Tells the client to sync a constant to the server
 				 *
-				 * @since 4.1
+				 * @since 4.1.0
 				 *
 				 * @param string The name of the constant
 				 * @param mixed The value of the constant
@@ -731,7 +731,7 @@ class Jetpack_Sync_Client {
 				/**
 				 * Tells the client to sync a callable (aka function) to the server
 				 *
-				 * @since 4.1
+				 * @since 4.1.0
 				 *
 				 * @param string The name of the callable
 				 * @param mixed The value of the callable
