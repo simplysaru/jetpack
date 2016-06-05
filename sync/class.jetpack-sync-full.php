@@ -196,6 +196,9 @@ class Jetpack_Sync_Full {
 			 	 * These are expanded to full objects before upload
 			 	 *
 			 	 * @since 4.1.0
+			 	 *
+			 	 * @param string $action_name Variable hook name.
+			 	 * @param array  $chunk       Chunk of content to be synced.
 			 	 */
 				do_action( $action_name, $chunk );
 				$counter += count( $chunked_ids );
