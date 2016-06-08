@@ -4,28 +4,15 @@ include_once( 'class.jetpack-admin-page.php' );
 // Builds the landing page and its menu
 class Jetpack_React_Page extends Jetpack_Admin_Page {
 
-	protected $fallback_page;
-
 	protected $dont_show_if_not_active = false;
 
 	protected $is_redirecting = false;
-
-	protected $is_fallback = false;
-
-	public function __construct() {
-		parent::__construct();
-
-		jetpack_require_lib( 'admin-pages/class.jetpack-settings-page' );
-		$this->fallback_page = new Jetpack_Settings_Page;
-	}
 
 	function get_page_hook() {
 		$title = _x( 'Jetpack', 'The menu item label', 'jetpack' );
 
 		// Add the main admin Jetpack menu
 		add_menu_page( 'Jetpack', $title, 'jetpack_admin_page', 'jetpack', array( $this, 'render' ), 'div' );
-
-		$this->fallback_page->get_page_hook();
 
 		// also create the submenu
 		return add_submenu_page( 'jetpack', $title, __( 'Dashboard', 'jetpack' ), 'jetpack_admin_page', 'jetpack' );
@@ -53,11 +40,6 @@ class Jetpack_React_Page extends Jetpack_Admin_Page {
 		add_filter( 'menu_order',                array( $this, 'jetpack_menu_order' ) );
 
 //		add_action( 'jetpack_notices_update_settings', array( $this, 'show_notices_update_settings' ), 10, 1 );
-
-		if ( isset( $_GET['page'] ) && 'jetpack_modules' === $_GET['page'] ) {
-			$this->is_fallback = true;
-			$this->fallback_page->admin_styles();
-		}
 
 		if ( ! isset( $_GET['page'] ) || 'jetpack' !== $_GET['page'] || ! empty( $_GET['configure'] ) ) {
 			return; // No need to handle the fallback redirection if we are not on the Jetpack page
@@ -121,10 +103,6 @@ class Jetpack_React_Page extends Jetpack_Admin_Page {
 		// Handle redirects to configuration pages
 		if ( ! empty( $_GET['configure'] ) ) {
 			return $this->render_nojs_configurable( $_GET['configure'] );
-		}
-		// Handle old WP and No-JS page
-		if ( $this->is_fallback ) {
-			return $this->fallback_page->page_render();
 		}
 		?>
 		<?php
